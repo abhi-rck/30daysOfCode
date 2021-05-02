@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/widgets/drawer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -6,8 +7,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      drawer: Drawer(),
+      appBar: AppBar(
+        title: Text("MyShop"),
+      ),
+      drawer: MyDrawer(),
       body: Center(
         child: Text("HomePage"),
       ),
