@@ -22,9 +22,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   loadData() async {
+    await Future.delayed(Duration(seconds: 5));
     var itemsJson = await rootBundle.loadString("assets/files/items.json");
     var decodeData = jsonDecode(itemsJson);
     var productsData = decodeData["products"];
+    ItemModel.items = List.from(productsData)
+        .map<Item>((item) => Item.fromMap(item))
+        .toList();
+    setState(() {});
   }
 
   @override
@@ -34,14 +39,18 @@ class _HomePageState extends State<HomePage> {
         title: Text("MyShop"),
       ),
       drawer: MyDrawer(),
-      body: ListView.builder(
-        itemCount: ItemModel.items.length,
-        itemBuilder: (context, index) {
-          return ItemWidget(
-            item: ItemModel.items[index],
-          );
-        },
-      ),
+      body: (ItemModel.items != null && ItemModel.items.length != 0)
+          ? ListView.builder(
+              itemCount: ItemModel.items.length,
+              itemBuilder: (context, index) {
+                return ItemWidget(
+                  item: ItemModel.items[index],
+                );
+              },
+            )
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }
