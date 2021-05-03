@@ -115,7 +115,7 @@ class ItemList extends StatelessWidget {
       shrinkWrap: true,
       itemCount: ItemModel.items.length,
       itemBuilder: (context, index) {
-        Item item = ItemModel.items[index];
+        Item item = ItemModel.getByPosition(index);
         return ListItem(item: item);
       },
     );
