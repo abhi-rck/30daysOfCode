@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/widgets/drawer.dart';
-import 'package:shop/widgets/item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -40,14 +39,22 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: MyDrawer(),
       body: (ItemModel.items != null && ItemModel.items.length != 0)
-          ? ListView.builder(
+          ? GridView.builder(
               itemCount: ItemModel.items.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 30,
+                mainAxisSpacing: 50,
+              ),
               itemBuilder: (context, index) {
-                return ItemWidget(
-                  item: ItemModel.items[index],
+                final item = ItemModel.items[index];
+                return Card(
+                  child: GridTile(
+                    header: Text(item.name),
+                    child: Image.network(item.image),
+                  ),
                 );
-              },
-            )
+              })
           : Center(
               child: CircularProgressIndicator(),
             ),
