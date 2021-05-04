@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
-import 'package:shop/pages/details_page.dart';
+
 import 'package:shop/utils/routes.dart';
 import 'package:shop/utils/themes.dart';
-import 'package:shop/widgets/drawer.dart';
+import 'package:shop/widgets/addtocart.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -25,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   loadData() async {
-    await Future.delayed(Duration(seconds: 1));
     var itemsJson = await rootBundle.loadString("assets/files/items.json");
     var decodeData = jsonDecode(itemsJson);
     var productsData = decodeData["products"];
@@ -115,21 +115,18 @@ class ItemList extends StatelessWidget {
       shrinkWrap: true,
       itemCount: ItemModel.items.length,
       itemBuilder: (context, index) {
-        Item item = ItemModel.getByPosition(index);
-        return ListItem(item: item);
+        return _ListItem(itemS: ItemModel.items[index]);
       },
     );
   }
 }
 
-class ListItem extends StatelessWidget {
-  final Item item;
-  const ListItem({Key key, @required Item this.item})
-      : assert(item != null),
-        super(key: key);
-
+class _ListItem extends StatelessWidget {
+  final Item itemS;
+  const _ListItem({Key key, @required Item this.itemS}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var item = itemS;
     return Padding(
       padding: EdgeInsets.only(top: 20.0),
       child: Container(
@@ -186,25 +183,7 @@ class ListItem extends StatelessWidget {
                             color: MyThemes.bluishColor,
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DetailsPage(item: item)));
-                          },
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  MyThemes.bluishColor),
-                              elevation: MaterialStateProperty.all(0.0),
-                              shape:
-                                  MaterialStateProperty.all(StadiumBorder())),
-                          child: Text(
-                            "Add to Cart",
-                            textScaleFactor: 0.8,
-                          ),
-                        ),
+                        AddToCart(item: item),
                       ],
                     ),
                   )

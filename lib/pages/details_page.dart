@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/utils/themes.dart';
+import 'package:shop/widgets/addtocart.dart';
 
 class DetailsPage extends StatelessWidget {
   final Item item;
@@ -82,18 +83,7 @@ class DetailsPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  "Buy",
-                  textScaleFactor: 1.1,
-                ),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(MyThemes.bluishColor),
-                  shape: MaterialStateProperty.all(StadiumBorder()),
-                ),
-              )
+              AddToCart(item: item),
             ],
           ),
         ),
